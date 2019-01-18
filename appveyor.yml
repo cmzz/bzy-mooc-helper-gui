@@ -18,14 +18,11 @@ cache:
 
 init:
   - git config --global core.autocrlf input
-  - git reset --hard HEAD
-  - npm install
-  - node --version
 
 install:
   - ps: Install-Product node 8 x64
   - git reset --hard HEAD
-  - yarn
+  - npm install
   - node --version
 
 build_script:
