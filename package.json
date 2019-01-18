@@ -1,8 +1,8 @@
 {
   "name": "bzy",
-  "version": "",
-  "author": "",
-  "description": "An mooc helper client.",
+  "version": "0.0.1",
+  "author": "bzy",
+  "description": "bzy网课助手软件",
   "license": null,
   "main": "./dist/electron/main.js",
   "scripts": {

@@ -41,10 +41,10 @@ branches:
   only:
   - master
 after_script:
-  - cd docs/dist
-  - git init
-  - git config user.name "wuzhuo"
-  - git config user.email "me19@qq.com"
-  - git add .
-  - git commit -m "Travis"
-  - git push  --force --quiet "https://${GH_TOKEN}@github.com/cmzz/bzy-mooc-helper-gui" master:gh-pages
+#  - cd docs/dist
+#  - git init
+#  - git config user.name "wuzhuo"
+#  - git config user.email "me19@qq.com"
+#  - git add .
+#  - git commit -m "Travis"
+#  - git push  --force --quiet "https://${GH_TOKEN}@github.com/cmzz/bzy-mooc-helper-gui" master:gh-pages

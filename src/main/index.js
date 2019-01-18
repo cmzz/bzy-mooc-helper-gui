@@ -1,6 +1,7 @@
 'use strict'
 
 import { app, BrowserWindow } from 'electron'
+import pkg from '../../package.json'
 
 /**
  * Set `__static` path to static files in production
@@ -8,6 +9,10 @@ import { app, BrowserWindow } from 'electron'
  */
 if (process.env.NODE_ENV !== 'development') {
   global.__static = require('path').join(__dirname, '/static').replace(/\\/g, '\\\\')
+}
+
+if (process.platform === 'win32') {
+  app.setAppUserModelId(pkg.build.appId)
 }
 
 let mainWindow
