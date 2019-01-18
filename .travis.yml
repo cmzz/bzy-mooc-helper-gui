@@ -29,14 +29,22 @@ before_install:
 install:
 #- export DISPLAY=':99.0'
 #- Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
-- nvm install 7
+- nvm install 11
 - curl -o- -L https://yarnpkg.com/install.sh | bash
 - source ~/.bashrc
 - npm install -g xvfb-maybe
 - yarn
 script:
 #- xvfb-maybe node_modules/.bin/karma start test/unit/karma.conf.js
-- yarn run build
+- npm run release
 branches:
   only:
   - master
+after_script:
+  - cd docs/dist
+  - git init
+  - git config user.name "wuzhuo"
+  - git config user.email "me19@qq.com"
+  - git add .
+  - git commit -m "Travis"
+  - git push  --force --quiet "https://${GH_TOKEN}@github.com/cmzz/bzy-mooc-helper-gui" master:gh-pages

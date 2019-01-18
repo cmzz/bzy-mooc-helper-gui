@@ -18,6 +18,9 @@ cache:
 
 init:
   - git config --global core.autocrlf input
+  - git reset --hard HEAD
+  - npm install
+  - node --version
 
 install:
   - ps: Install-Product node 8 x64
@@ -27,6 +30,6 @@ install:
 
 build_script:
   #- yarn test
-  - yarn build
+  - npm run release
 
 test: off

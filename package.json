@@ -6,7 +6,9 @@
   "license": null,
   "main": "./dist/electron/main.js",
   "scripts": {
+    "render": "webpack-dev-server --hot --colors --config .electron-vue/webpack.renderer.config.js --port 9080 --content-base app/dist",
     "build": "node .electron-vue/build.js && electron-builder",
+    "release": "node .electron-vue/build.js && electron-builder",
     "build:dir": "node .electron-vue/build.js && electron-builder --dir",
     "build:clean": "cross-env BUILD_TARGET=clean node .electron-vue/build.js",
     "build:web": "cross-env BUILD_TARGET=web node .electron-vue/build.js",
@@ -18,11 +20,14 @@
     "pack:renderer": "cross-env NODE_ENV=production webpack --progress --colors --config .electron-vue/webpack.renderer.config.js",
     "test": "npm run unit",
     "unit": "karma start test/unit/karma.conf.js",
-    "postinstall": "npm run lint:fix"
+    "postinstall": "npm run lint:fix",
+    "patch": "npm version patch && git push origin master && git push origin --tags",
+    "minor": "npm version minor && git push origin master && git push origin --tags",
+    "major": "npm version major && git push origin master && git push origin --tags"
   },
   "build": {
-    "productName": "bzy",
-    "appId": "app.bzy",
+    "productName": "Bzy网课助手",
+    "appId": "app.bzy.mooc.helper",
     "directories": {
       "output": "build"
     },
@@ -45,10 +50,18 @@
       ]
     },
     "mac": {
-      "icon": "build/icons/icon.icns"
+      "icon": "build/icons/icon.icns",
+      "extendInfo": {
+        "LSUIElement": 1
+      }
     },
     "win": {
-      "icon": "build/icons/icon.ico"
+      "icon": "build/icons/icon.ico",
+      "target": "nsis"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
     },
     "linux": {
       "icon": "build/icons"
@@ -61,7 +74,14 @@
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1",
     "vuex-electron": "^1.0.0",
-    "yarn": "^1.13.0"
+    "yarn": "^1.13.0",
+    "fix-path": "^2.1.0",
+    "fs-extra": "^4.0.2",
+    "keycode": "^2.1.9",
+    "lodash-id": "^0.14.0",
+    "lowdb": "^1.0.0",
+    "md5": "^2.2.1",
+    "dateformat": "^3.0.3"
   },
   "devDependencies": {
     "ajv": "^6.5.0",
