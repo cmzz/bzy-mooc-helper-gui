@@ -3,6 +3,15 @@
 import { app, BrowserWindow } from 'electron'
 import pkg from '../../package.json'
 
+const io = require('socket.io').listen(37108)
+io.on('connection', function (socket) {
+  console.log('a user connected')
+  socket.emit('news', { hello: 'world' })
+  socket.on('my other event', function (data) {
+    console.log(data)
+  })
+})
+
 /**
  * Set `__static` path to static files in production
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-static-assets.html

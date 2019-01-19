@@ -6,7 +6,7 @@
 
 <script>
   export default {
-    name: 'bzy'
+    name: 'Bzy网课助手'
   }
 </script>
 

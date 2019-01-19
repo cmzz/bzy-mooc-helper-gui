@@ -1,0 +1,130 @@
+// color
+$mainRedColor: #F35A42;
+.c-transparent {
+  color: transparent;
+}
+.c-semi {
+  color: #353535;
+}
+.c-blue {
+  color: #2AA6F9
+}
+.c-gray {
+  color: #888888;
+}
+.c-light {
+  color: #b2b2b2;
+}
+.c-white {
+  color: #ffffff;
+}
+.c-black {
+  color: #000000;
+}
+.c-green {
+  color: #09bb07;
+}
+.c-red {
+  color: $mainRedColor;
+}
+.c-link {
+  color: #2AA6F9;
+}
+
+// 背景色
+.bc-white {
+  background: #fff;
+}
+.bc-light {
+  background: #b2b2b2;
+}
+.bc-red {
+  background: #FF0036;
+}
+
+// margin & padding
+$i: 0;
+@while $i <= 200 {
+  .m-#{$i} { margin: #{$i}px !important; }
+  .mt-#{$i} { margin-top: #{$i}px !important; }
+  .mb-#{$i} { margin-bottom: #{$i}px !important; }
+  .ml-#{$i} { margin-left: #{$i}px !important; }
+  .mr-#{$i} { margin-right: #{$i}px !important; }
+
+  .p-#{$i} { padding: #{$i}px !important; }
+  .pt-#{$i} { padding-top: #{$i}px !important; }
+  .pb-#{$i} { padding-bottom: #{$i}px !important; }
+  .pl-#{$i} { padding-left: #{$i}px !important; }
+  .pr-#{$i} { padding-right: #{$i}px !important; }
+
+  .border-radius-#{$i} { border-radius: #{$i}px; }
+  .border-radius-top-#{$i} { border-top-left-radius: #{$i}px; border-top-right-radius: #{$i}px; }
+  .border-radius-left-#{$i} { border-top-left-radius: #{$i}px; border-bottom-left-radius: #{$i}px; }
+  .border-radius-right-#{$i} { border-bottom-right-radius: #{$i}px; border-top-right-radius: #{$i}px; }
+  .border-radius-bottom-#{$i} { border-bottom-left-radius: #{$i}px; border-bottom-right-radius: #{$i}px; }
+  .f-#{$i} {
+    font-size: #{$i}px !important;
+  }
+
+  @if $i < 40 {
+    $i: $i + 1;
+  } @else {
+    $i: $i + 10;
+  }
+}
+.fix-mt-20 {
+  margin-top: -20px;
+}
+
+// text-align
+.align-left {
+  text-align: left;
+}
+.align-right {
+  text-align: right;
+}
+.align-center {
+  text-align: center;
+}
+
+// 文本
+.text-nowrap {
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.clearfix {
+  clear:both;
+  height:0;
+  overflow:hidden;
+}
+.clearfix:after {
+  content: ".";
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden;
+}
+
+// 修复图片下方的空白
+image, video {
+  vertical-align: middle;
+  width:100%;
+  height:100%;
+}
+
+.pull-right {
+  float: right;
+}
+.pull-left {
+  float: left;
+}
+
+.pin-bottom {
+  position: fixed;
+  z-index: 5000;
+  bottom: 0;
+  width: 100%;
+  background-color: #ffffff;
+}
