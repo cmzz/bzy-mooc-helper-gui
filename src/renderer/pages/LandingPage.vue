@@ -35,7 +35,7 @@
       </el-container>
       <el-footer>
         <div class="footer-menu align-right">
-          <el-tag size="mini" :closable="false">Version: 1.0.1</el-tag>
+          <el-tag size="mini" :closable="false">Version: {{ version }}</el-tag>
         </div>
       </el-footer>
     </main>
@@ -43,13 +43,21 @@
 </template>
 
 <script>
+  import pkg from '../../../package.json'
   export default {
     name: 'landing-page',
+    data: () => {
+      return {
+        'version': pkg.version
+      }
+    },
     components: { },
     methods: {
       open (link) {
         this.$electron.shell.openExternal(link)
       }
+    },
+    created: () => {
     }
   }
 </script>
