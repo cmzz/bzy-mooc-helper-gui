@@ -2,8 +2,9 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>bzy</title>
-    <% if (htmlWebpackPlugin.options.nodeModules) { %>
+    <title>八爪博士</title>
+
+  <% if (htmlWebpackPlugin.options.nodeModules) { %>
       <!-- Add `node_modules/` to global paths so `require` works properly in development -->
       <script>
         require('module').globalPaths.push('<%= htmlWebpackPlugin.options.nodeModules.replace(/\\/g, '\\\\') %>')
