@@ -7,14 +7,14 @@
         </el-header>
         <el-main>
           <div class="brand">
-            <p class="title">嗨，欢迎使用Bzy网课助手!</p>
+            <p class="title">嗨，欢迎使用八爪博士网课助手!</p>
           </div>
 
           <el-row :gutter="20" class="align-center mt-60">
             <el-col :span="6"><div class="grid-content c-transparent">1</div></el-col>
             <el-col :span="6">
               <div class="grid-content platform-box">
-                <p class="title">超星尔雅（学习通）</p>
+                <p class="title">超星尔雅 (学习通)</p>
                 <div class="platform-icon mt-20">
                   <i class="iconfont f-40">&#xe63c;</i>
                 </div>
@@ -22,7 +22,7 @@
             </el-col>
             <el-col :span="6">
               <div class="grid-content platform-box">
-                <p class="title">智慧树（知到）</p>
+                <p class="title">智慧树网 (知到)</p>
                 <div class="platform-icon mt-20">
                   <i class="iconfont f-40">&#xe6ba;</i>
                 </div>
