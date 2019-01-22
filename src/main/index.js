@@ -1,9 +1,29 @@
 'use strict'
 
-import { app, BrowserWindow, Tray, Menu, Notification, clipboard, ipcMain, globalShortcut, dialog } from 'electron'
+import { app as ElectronApp } from 'electron'
 import pkg from '../../package.json'
-import coreIpc from './utils/coreIPC'
 import fixPath from 'fix-path'
+import application from '../utils/app-remote'
+
+// 禁用自签发证书警告
+ElectronApp.commandLine.appendSwitch('ignore-certificate-errors')
+
+application.init(__dirname)
+
+if (DEBUG && DEBUG !== 'production') { // eslint-disable-line
+  // 启用 electron-debug https://github.com/sindresorhus/electron-debug
+  require('electron-debug')() // eslint-disable-line global-require
+
+  // 使得 app/node_modules 内的模块可以直接使用
+  const path = require('path'); // eslint-disable-line
+  const p = path.join(__dirname, '..', 'app', 'node_modules'); // eslint-disable-line
+  require('module').globalPaths.push(p); // eslint-disable-line
+}
+
+if (process.env.NODE_ENV === 'production') {
+  const sourceMapSupport = require('source-map-support') // eslint-disable-line
+  sourceMapSupport.install()
+}
 
 /**
  * Set `__static` path to static files in production
@@ -12,68 +32,30 @@ import fixPath from 'fix-path'
 if (process.env.NODE_ENV !== 'development') {
   global.__static = require('path').join(__dirname, '/static').replace(/\\/g, '\\\\')
 }
+
 if (process.env.DEBUG_ENV === 'debug') {
   global.__static = require('path').join(__dirname, '../../static').replace(/\\/g, '\\\\')
+  require('electron-debug')() // eslint-disable-line global-require
 }
-
-let mainWindow
-let tray
-let menu
-let contextMenu
-let io
-const winURL = process.env.NODE_ENV === 'development'
-  ? `http://localhost:19080`
-  : `file://${__dirname}/index.html`
 
 // fix the $PATH in macOS
 fixPath()
 
 if (process.platform === 'win32') {
-  app.setAppUserModelId(pkg.build.appId)
+  ElectronApp.setAppUserModelId(pkg.build.appId)
 }
 
-function createWindow () {
-  /**
-   * Initial window options
-   */
-  mainWindow = new BrowserWindow({
-    height: 563,
-    useContentSize: true,
-    width: 1000
-  })
-
-  mainWindow.loadURL(winURL)
-
-  mainWindow.on('closed', () => {
-    mainWindow = null
-  })
-}
-
-app.on('ready', createWindow)
-app.on('ready', () => {
-  // 创建 socket.io server
-  io = require('socket.io').listen(37108)
-
-  io.on('connection', function (socket) {
-    console.log('a user connected')
-    socket.emit('news', { hello: 'world' })
-    socket.on('my other event', function (data) {
-      console.log(data)
-    })
-  })
+ElectronApp.on('ready', function () {
+  application.ready()
 })
 
-app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
-    if (io != null) {
-      io.close()
-    }
-    app.quit()
-  }
+ElectronApp.on('window-all-closed', () => {
+  try {
+    ElectronApp.quit()
+  } catch (_) {} // eslint-disable-line
 })
 
-app.on('activate', () => {
-  if (mainWindow === null) {
-    createWindow()
-  }
+ElectronApp.on('activate', () => {
+  application.openOrCreateWindow()
+  application.createAppMenu()
 })
