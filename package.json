@@ -2,7 +2,7 @@
   "name": "bzy-mooc-helper",
   "version": "0.1.4",
   "author": "bzy",
-  "description": "刷网课就用Bzy网课助手软件",
+  "description": "刷网课就用八爪博士网课助手软件",
   "license": null,
   "main": "./dist/electron/main.js",
   "scripts": {
@@ -26,7 +26,7 @@
     "major": "npm version major && git push origin master && git push origin --tags"
   },
   "build": {
-    "productName": "Bzy网课助手",
+    "productName": "八爪博士网课助手",
     "appId": "app.bzy.mooc.helper",
     "directories": {
       "output": "build"

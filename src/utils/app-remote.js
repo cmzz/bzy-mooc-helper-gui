@@ -4,6 +4,7 @@ import electron, {
 import Lang from './lang'
 import EVENT from './remote-events'
 import events from './events'
+import config from '../config'
 
 if (typeof DEBUG === 'undefined') {
   global.DEBUG = process.env.NODE_ENV === 'debug' || process.env.NODE_ENV === 'development'
@@ -128,7 +129,7 @@ class AppRemote {
     })
 
     // 绑定渲染进程通知准备就绪事件
-    ipcMain.on(EVENT.app_ready, (e, config, windowName) => {
+    ipcMain.on(EVENT.app_ready, (e, windowName) => {
       if (windowName) {
         Object.assign(this.appConfig, config)
         this.createTrayIcon(windowName)
@@ -138,13 +139,12 @@ class AppRemote {
   }
 
   // 初始化并设置 Electron 应用入口路径
-  init (entryPath) {
-    if (!entryPath) {
-      throw new Error('Argument entryPath must be set on init app-remote.')
+  init (rootPath) {
+    if (!rootPath) {
+      throw new Error('Argument rootPath must be set on init app-remote.')
     }
 
-    this.entryPath = entryPath
-    global.entryPath = entryPath
+    this.rootPath = rootPath
   }
 
   /**
@@ -177,7 +177,19 @@ class AppRemote {
     const {currentFocusWindow} = this
 
     if (!currentFocusWindow) {
-      this.createAppWindow({})
+      // todo check login
+      // 如果为登录，创建登录窗口，否则创建主窗口
+      let isLogin = false
+      if (!isLogin) {
+        this.createAppWindow({
+          width: 400,
+          height: 650,
+          minWidth: 400,
+          minHeight: 650
+        }, 'login')
+      } else {
+        this.createAppWindow({}, 'main')
+      }
     } else if (!currentFocusWindow.isVisible()) {
       currentFocusWindow.show()
       currentFocusWindow.focus()
@@ -188,19 +200,26 @@ class AppRemote {
    * 创建应用窗口
    *
    * @param {Object} options Electron 窗口初始化选项
+   * @param {String} windowName 窗口名称
    * @memberof AppRemote
    * @return {void}
    */
-  createAppWindow (options) {
+  createAppWindow (options, windowName) {
     const hasMainWindow = !!this.mainWindow
-    const windowName = hasMainWindow ? `main-${appWindowIndex++}` : 'main'
 
-    let winURL = process.env.NODE_ENV === 'development'
-      ? `http://localhost:9080`
-      : `file://${__dirname}/index.html`
+    if (!windowName) {
+      windowName = hasMainWindow ? `main-${appWindowIndex++}` : 'main'
+    }
 
+    let winURL
     if (windowName === 'main') {
-
+      winURL = process.env.NODE_ENV === 'development'
+        ? `http://localhost:9080`
+        : `file://${__dirname}/index.html`
+    } else if (windowName === 'login') {
+      winURL = process.env.NODE_ENV === 'development'
+        ? `http://localhost:9080/#login-page`
+        : `file://${__dirname}/index.html#login-page`
     }
 
     options = Object.assign({
@@ -210,11 +229,11 @@ class AppRemote {
       minHeight: 650,
       url: winURL,
       name: windowName,
-      resizable: true,
+      resizable: DEBUG, // eslint-disable-line
       debug: DEBUG // eslint-disable-line
     }, options)
 
-    if (DEBUG && !hasMainWindow) { // eslint-disable-line
+    if (DEBUG && !hasMainWindow && windowName === 'main') { // eslint-disable-line
       const display = electron.screen.getPrimaryDisplay()
       options.height = display.workAreaSize.height
       options.width = 800
@@ -251,7 +270,7 @@ class AppRemote {
       return false
     })
 
-    if (!hasMainWindow) {
+    if (!hasMainWindow && windowName === 'main') {
       /**
        * 主窗口实例
        * @type {BrowserWindow}
@@ -346,7 +365,7 @@ class AppRemote {
     let {url} = options
     if (url) {
       if (!url.startsWith('file://') && !url.startsWith('http://') && !url.startsWith('https://')) {
-        url = `file://${this.entryPath}/${options.url}`
+        url = `file://${this.rootPath}/${options.url}`
       }
 
       if (DEBUG) { // eslint-disable-line
@@ -414,7 +433,13 @@ class AppRemote {
     this.removeTrayIcon(windowName)
 
     // 创建一个通知栏图标
-    const tray = new Tray(`${this.entryPath}/${this.appConfig.media['image.path']}tray-icon-16.png`)
+    let trayImage
+    if (IS_MAC_OSX) {
+      trayImage = `${this.rootPath}/${this.appConfig.media['image.path']}tray-icon-16.png`
+    } else {
+      trayImage = `${this.rootPath}/${this.appConfig.media['image.path']}tray-icon-32.png`
+    }
+    const tray = new Tray(trayImage)
 
     // 设置通知栏图标右键菜单功能
     const trayContextMenu = Menu.buildFromTemplate([
@@ -469,8 +494,8 @@ class AppRemote {
      * @private
      */
     this._trayIcons = [
-      nativeImage.createFromPath(`${this.entryPath}/${this.appConfig.media['image.path']}tray-icon-16.png`),
-      nativeImage.createFromPath(`${this.entryPath}/${this.appConfig.media['image.path']}tray-icon-transparent.png`)
+      nativeImage.createFromPath(`${this.rootPath}/${this.appConfig.media['image.path']}tray-icon-16.png`),
+      nativeImage.createFromPath(`${this.rootPath}/${this.appConfig.media['image.path']}tray-icon-transparent.png`)
     ]
   }
 

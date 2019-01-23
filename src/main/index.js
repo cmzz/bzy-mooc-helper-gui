@@ -8,8 +8,6 @@ import application from '../utils/app-remote'
 // 禁用自签发证书警告
 ElectronApp.commandLine.appendSwitch('ignore-certificate-errors')
 
-application.init(__dirname)
-
 if (DEBUG && DEBUG !== 'production') { // eslint-disable-line
   // 启用 electron-debug https://github.com/sindresorhus/electron-debug
   require('electron-debug')() // eslint-disable-line global-require
@@ -37,6 +35,8 @@ if (process.env.DEBUG_ENV === 'debug') {
   global.__static = require('path').join(__dirname, '../../static').replace(/\\/g, '\\\\')
   require('electron-debug')() // eslint-disable-line global-require
 }
+
+application.init(__static + '/../') // eslint-disable-line
 
 // fix the $PATH in macOS
 fixPath()
