@@ -131,7 +131,6 @@ class AppRemote {
     // 绑定渲染进程通知准备就绪事件
     ipcMain.on(EVENT.app_ready, (e, windowName) => {
       if (windowName) {
-        Object.assign(this.appConfig, config)
         this.createTrayIcon(windowName)
       }
       if (SHOW_LOG) console.log('\n>> App ready.')
@@ -144,6 +143,7 @@ class AppRemote {
       throw new Error('Argument rootPath must be set on init app-remote.')
     }
 
+    Object.assign(this.appConfig, config)
     this.rootPath = rootPath
   }
 
@@ -156,6 +156,7 @@ class AppRemote {
     this.openOrCreateWindow()
     this.createAppMenu()
 
+    console.log('appConfig', this.appConfig)
     // 设置关于窗口
     if (IS_MAC_OSX && typeof ElectronApp.setAboutPanelOptions === 'function') {
       ElectronApp.setAboutPanelOptions({
