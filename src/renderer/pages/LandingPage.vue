@@ -1,5 +1,5 @@
 <template>
-  <div id="wrapper">
+  <div id="wrapper" class="landing-page">
     <main>
       <el-container>
         <el-header>
@@ -33,7 +33,7 @@
 
         </el-main>
       </el-container>
-      <el-footer>
+      <el-footer class="footer-menu">
         <div class="footer-menu align-right">
           <el-tag size="mini" :closable="false">Version: {{ version }}</el-tag>
         </div>
@@ -63,49 +63,51 @@
   }
 </script>
 
-<style>
-  #logo {
-    height: 50px;
-    width: auto;
-  }
+<style lang="less">
+  .landing-page {
+    #logo {
+      height: 50px;
+      width: auto;
+    }
 
-  .el-header {
-    background: #323741;
-    border-bottom: 1px solid #292D35;
-    box-shadow:0 2px 4px #15171B;
-  }
+    .el-header {
+      background: #323741;
+      border-bottom: 1px solid #292D35;
+      box-shadow:0 2px 4px #15171B;
+    }
 
-  .brand {
-    text-align: center;
-    margin-top: 50px;
-  }
+    .brand {
+      text-align: center;
+      margin-top: 50px;
+    }
 
-  .platform-box {
-    border: 1px solid #2E3034;
-    padding: 10px;
-    -webkit-border-radius: 4px;
-    -moz-border-radius: 4px;
-    border-radius: 4px;
-  }
+    .platform-box {
+      border: 1px solid #2E3034;
+      padding: 10px;
+      -webkit-border-radius: 4px;
+      -moz-border-radius: 4px;
+      border-radius: 4px;
+    }
 
-  .platform-box:hover {
-    background: #21293A;
-    cursor: pointer;
-  }
+    .platform-box:hover {
+      background: #21293A;
+      cursor: pointer;
+    }
 
-  .el-footer {
-    border-top: 1px solid #131418;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    background: #34373F;
-    height: 32px !important;
-    padding: 4px 10px 4px 10px !important;
-  }
+    .footer-menu {
+      border-top: 1px solid #131418;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: #34373F;
+      height: 32px !important;
+      padding: 4px 10px 4px 10px !important;
+    }
 
-  .el-footer .el-tag {
-    background: #3F4554 !important;
-    color: #FCFCFC;
-    border: none;
+    .footer-menu .el-tag {
+      background: #3F4554 !important;
+      color: #FCFCFC;
+      border: none;
+    }
   }
 </style>
